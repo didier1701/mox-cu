@@ -3,16 +3,22 @@ from eth_account import Account
 from pathlib import Path
 import json
 
-KEYSTORE_PATH = Path(".keystore.json")
+
+
+KEYSTORE_PATH = Path("keystore.json")
 
 def main():
-    private_key = getpass.getpass("Enter your private key:")
+    private_key = getpass.getpass("Enter your private key: ")
     my_account = Account.from_key(private_key)
-    password = getpass.getpass("Enter the password to encrypt the key:")
-    encrpted_account = my_account.encrypt(password)
 
-    print(f"saving the encrypted key to a file {KEYSTORE_PATH}")
-    with KEYSTORE_PATH.open("w") as fp:
-        json.dump(encrpted_account, fp)
+    password = getpass.getpass("Enter a password:\n")
+    encrypted_account = my_account.encrypt(password)
+    print()
+
+    print(f"saving to {KEYSTORE_PATH}...")
+    with KEYSTORE_PATH.open("w") as keystore_file:
+        json.dump(encrypted_account, keystore_file)
+    print("Saved!")
+
 if __name__ == "__main__":
     main()
